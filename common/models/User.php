@@ -7,6 +7,8 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\web\UploadedFile;
+use yiidreamteam\upload\ImageUploadBehavior;
 
 /**
  * User model
@@ -33,34 +35,39 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  * @property string $password write-only password
  */
-class User extends BaseTimestampedModel implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
+    public $file;
+    public $password;
 
     public static function tableName()
     {
         return '{{%user}}';
     }
 
-    public function behaviors()
+    public function beforeValidate() : bool
     {
-        return [
-            TimestampBehavior::class,
-        ];
+        if (parent::beforeValidate()) {
+            $this->file = UploadedFile::getInstance($this, 'file');
+            return true;
+        }
+        return false;
     }
     public function rules()
     {
         return [
-            [['firstname', 'secount_name', 'last_name', 'sex', 'jshsh', 'birth_date', 'seriesParport', 'email', 'phone', 'part_id', 'region_id', 'photo', 'auth_key', 'password_hash', 'created_at', 'updated_at'], 'required'],
+            [['firstname', 'secount_name', 'last_name', 'sex', 'jshsh', 'birth_date', 'seriesParport', 'email', 'phone', 'part_id', 'region_id'], 'required'],
             [['part_id', 'region_id', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['firstname', 'secount_name', 'last_name', 'sex', 'birth_date', 'seriesParport', 'email', 'phone', 'photo', 'password_hash', 'password_reset_token', 'verification_token'], 'string', 'max' => 255],
+            [['firstname', 'secount_name', 'last_name', 'sex', 'birth_date', 'seriesParport', 'email', 'phone', 'password_hash', 'password_reset_token', 'verification_token'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
-            [['jshsh'], 'integer', 'max' => 14,'min' => 14],
+            [['jshsh'], 'integer'],
+            [['file'], 'image'],
             [['email'], 'unique'],
-            [['phone'], PhoneInputValidator::className()],
+            [['email'], 'email'],
             [['password_reset_token'], 'unique'],
             [['part_id'], 'exist', 'skipOnError' => true, 'targetClass' => Parties::className(), 'targetAttribute' => ['part_id' => 'id']],
             [['region_id'], 'exist', 'skipOnError' => true, 'targetClass' => Regions::className(), 'targetAttribute' => ['region_id' => 'id']],
@@ -95,6 +102,52 @@ class User extends BaseTimestampedModel implements IdentityInterface
             'verification_token' => Yii::t('app', 'Verification Token'),
         ];
     }
+
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => 'yii\behaviors\TimestampBehavior',
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['updated_at', 'created_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+            ],
+            [
+                'class' => ImageUploadBehavior::class,
+                'attribute' => 'photo',
+                'createThumbsOnRequest' => true,
+
+                'filePath' => '@frontend/web/app-images/store/students/[[attribute_id]]/[[filename]].[[extension]]',
+                'fileUrl' => '@url/app-images/store/students/[[attribute_id]]/[[filename]].[[extension]]',
+
+                'thumbPath' => '@frontend/web/app-images/cache/students/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+                'thumbUrl' => '@url/app-images/cache/students/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+                'thumbs' => [
+                    'xs' => ['width' => 30, 'height' => 40],
+                    'sm' => ['width' => 60, 'height' => 80],
+                    'md' => ['width' => 120, 'height' => 160],
+                    'lg' => ['width' => 360, 'height' => 480],
+                ],
+            ],
+        ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if ($this->id == 1) {
+            $this->status = self::STATUS_ACTIVE;
+        }
+
+        if ($this->password) {
+            $this->setPassword($this->password);
+        }
+        $this->generateAuthKey();
+
+        return parent::beforeSave($insert);
+    }
+
+
     public static function findIdentity($id)
     {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
@@ -227,28 +280,5 @@ class User extends BaseTimestampedModel implements IdentityInterface
         $this->password_reset_token = null;
     }
 
-    public function signup()
-    {
-        if (!$this->validate()) {
-            return null;
-        }
-        $user = new User();
-        $user->email = $this->email;
-        $user->firstname = $this->firstname;
-        $user->secount_name = $this->secount_name;
-        $user->last_name = $this->last_name;
-        $user->sex = $this->sex;
-        $user->jshsh = $this->jshsh;
-        $user->birth_date = $this->birth_date;
-        $user->seriesParport = $this->seriesParport;
-        $user->phone = $this->phone;
-        $user->photo = $this->photo;
-        $user->part_id = $this->part_id;
-        $user->region_id = $this->region_id;
-        $user->setPassword($this->password);
-        $user->generateAuthKey();
-        $user->generateEmailVerificationToken();
-        return $user->save();
 
-    }
 }

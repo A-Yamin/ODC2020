@@ -4,6 +4,9 @@ namespace common\models;
 
 use Yii;
 use common\models\BaseTimestampedModel;
+use yii\db\ActiveRecord;
+use yiidreamteam\upload\ImageUploadBehavior;
+
 /**
  * This is the model class for table "party".
  *
@@ -14,7 +17,7 @@ use common\models\BaseTimestampedModel;
  *
  * @property User[] $users
  */
-class Parties extends BaseTimestampedModel
+class Parties extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -23,7 +26,18 @@ class Parties extends BaseTimestampedModel
     {
         return 'party';
     }
-
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => 'yii\behaviors\TimestampBehavior',
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['updated_at', 'created_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+            ],
+        ];
+    }
     /**
      * {@inheritdoc}
      */

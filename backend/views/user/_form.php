@@ -2,12 +2,14 @@
 
 use borales\extensions\phoneInput\PhoneInput;
 use common\models\Parties;
+use common\models\Regions;
 use common\models\User;
 use kartik\date\DatePicker;
 use sultonov\cropper\CropperWidget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\widgets\MaskedInput;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
@@ -16,7 +18,7 @@ use yii\widgets\ActiveForm;
 
 <div class="user-form">
 
-    <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'firstname')->textInput(['maxlength' => true]) ?>
 
@@ -39,28 +41,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'phone')->widget(PhoneInput::className(), [
-        'options' => [
-            'class' => "form-group form-control"
-        ],
-        'jsOptions' => [
-            'preferredCountries' => ['no', 'pl', 'ua'],
-        ]
-    ]); ?>
+    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'part_id')->dropDownList(ArrayHelper::map(Parties::find()->all(),'id','name')) ?>
-
-    <?= $form->field($model, 'region_id')->dropDownList(ArrayHelper::map(\common\models\Regions::find()->all(),'id','name')) ?>
-
-    <?=$form->field($model, 'photo')->widget(CropperWidget::className(), [
-        'uploadUrl' => \yii\helpers\Url::toRoute('user/userPhoto/'),
-        'prefixUrl' => '/uploads/userPhoto/',
-        'avatar' => true,
-        'width' => 480,
-        'height' => 480
+    <?= $form->field($model, 'phone')->widget(MaskedInput::className(), [
+        'mask' => '+998-99-999-99-99',
     ]) ?>
 
-    <?= $form->field($model, 'status')->dropDownList([User::STATUS_ACTIVE => 'active',User::STATUS_INACTIVE => 'inactive' , User::STATUS_DELETED => 'deleted']) ?>
+    <?= $form->field($model, 'part_id')->dropDownList(ArrayHelper::map(Parties::find()->all(), 'id', 'name')) ?>
+
+    <?= $form->field($model, 'region_id')->dropDownList(ArrayHelper::map(Regions::find()->all(), 'id', 'name')) ?>
+
+    <?= $form->field($model, 'file')->fileInput(['multiple' => false, 'accept' => 'image/*']) ?>
+
+    <?= $form->field($model, 'status')->dropDownList([User::STATUS_ACTIVE => 'active', User::STATUS_INACTIVE => 'inactive', User::STATUS_DELETED => 'deleted']) ?>
 
 
     <div class="form-group">
