@@ -55,9 +55,14 @@ class UserController extends Controller
     {
         $model = new User();
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate() ) {
-//            VarDumper::dump($model->file,12,true);die;
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->file) {
+                $model->photo = $model->file;
+            }
+            $model->save();
+            Yii::$app->session->setFlash('success','Successfully added');
+            return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
+
         }
         var_dump($model->getErrors());
         return $this->render('create', [
@@ -84,6 +89,7 @@ class UserController extends Controller
 
         return $this->redirect(['index']);
     }
+
     protected function findModel($id)
     {
         if (($model = User::findOne($id)) !== null) {

@@ -19,7 +19,8 @@ use yii\widgets\MaskedInput;
 <div class="user-form">
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
-
+    <?php if (Yii::$app->session->hasFlash('success')): ?>
+    <?php endif ?>
     <?= $form->field($model, 'firstname')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'secount_name')->textInput(['maxlength' => true]) ?>

@@ -35,14 +35,21 @@ $this->params['breadcrumbs'][] = $this->title;
             //'birth_date',
             //'seriesParport',
             //'email:email',
-            'phone',
+            [
+                'attribute' => 'phone',
+                'value' => function ($model) {
+                    return Html::a($model->phone,'tel:'.$model->phone);
+                },
+                'label' => 'Phone',
+                'format' => 'raw'
+            ],
             //'part_id',
             //'region_id',
             //'photo',
             //'auth_key',
             //'password_hash',
             //'password_reset_token',
-            'status',
+//            'status',
             //'created_at',
             //'updated_at',
             //'verification_token',

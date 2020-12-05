@@ -11,7 +11,8 @@ use yii\widgets\ActiveForm;
 <div class="categories-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
+    <?php if (Yii::$app->session->hasFlash('success')): ?>
+    <?php endif ?>
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">

@@ -70,8 +70,8 @@ class CategoriesController extends Controller
             $model->created_at = time();
             $model->updated_at =time();
             $model->save();
-
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success','Successfully added');
+            return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
         }
         return $this->render('create', [
             'model' => $model,

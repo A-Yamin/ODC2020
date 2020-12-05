@@ -65,7 +65,9 @@ class User extends ActiveRecord implements IdentityInterface
             [['firstname', 'secount_name', 'last_name', 'sex', 'birth_date', 'seriesParport', 'email', 'phone', 'password_hash', 'password_reset_token', 'verification_token'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['jshsh'], 'integer'],
+            [['password'], 'string'],
             [['file'], 'image'],
+            [['file'], 'required'],
             [['email'], 'unique'],
             [['email'], 'email'],
             [['password_reset_token'], 'unique'],
@@ -279,6 +281,18 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+    public function getPart()
+    {
+        return $this->hasOne(Parties::className(), ['id' => 'part_id']);
+    }
 
-
+    /**
+     * Gets query for [[Region]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRegion()
+    {
+        return $this->hasOne(Regions::className(), ['id' => 'region_id']);
+    }
 }

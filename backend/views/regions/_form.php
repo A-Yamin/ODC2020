@@ -13,7 +13,8 @@ use yii\widgets\ActiveForm;
 <div class="regions-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
+    <?php if (Yii::$app->session->hasFlash('success')): ?>
+    <?php endif ?>
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'parent_id')->dropDownList(ArrayHelper::map(Regions::find()->all(),'id','name'),[

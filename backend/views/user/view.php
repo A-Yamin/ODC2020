@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
 
-$this->title = $model->id;
+$this->title = $model->firstname;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -27,7 +27,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'firstname',
             'secount_name',
             'last_name',
@@ -36,17 +35,31 @@ $this->params['breadcrumbs'][] = $this->title;
             'birth_date',
             'seriesParport',
             'email:email',
-            'phone',
-            'part_id',
-            'region_id',
-            'photo',
-            'auth_key',
-            'password_hash',
-            'password_reset_token',
+            [
+                'attribute' => 'phone',
+                'value' => function ($model) {
+                    return Html::a($model->phone,'tel:'.$model->phone);
+                },
+                'label' => 'Phone',
+                'format' => 'raw'
+            ],
+            [
+                'attribute' => 'part_id',
+                'value' => function ($model) {
+                    return $model->part->name;
+                },
+                'label' => 'Parties'
+            ],
+            [
+                'attribute' => 'region_id',
+                'value' => function ($model) {
+                    return $model->region->name;
+                },
+                'label' => 'Region'
+            ],
             'status',
-            'created_at',
-            'updated_at',
-            'verification_token',
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 

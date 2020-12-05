@@ -9,14 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-/**
- * PartiesController implements the CRUD actions for Parties model.
- */
 class PartiesController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
     public function behaviors()
     {
         return [
@@ -29,10 +23,7 @@ class PartiesController extends Controller
         ];
     }
 
-    /**
-     * Lists all Parties models.
-     * @return mixed
-     */
+
     public function actionIndex()
     {
         $searchModel = new PartiesSearch();
@@ -44,12 +35,7 @@ class PartiesController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Parties model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+
     public function actionView($id)
     {
         return $this->render('view', [
@@ -57,11 +43,6 @@ class PartiesController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Parties model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
     public function actionCreate()
     {
         $model = new Parties();
@@ -70,7 +51,8 @@ class PartiesController extends Controller
             $model->created_at = time();
             $model->updated_at = time();
             $model->save();
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success','Successfully added');
+            return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
         }
 
         return $this->render('create', [
@@ -78,13 +60,6 @@ class PartiesController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing Parties model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -100,13 +75,7 @@ class PartiesController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Parties model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -114,13 +83,7 @@ class PartiesController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Parties model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Parties the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+
     protected function findModel($id)
     {
         if (($model = Parties::findOne($id)) !== null) {
