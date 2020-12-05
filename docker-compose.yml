@@ -1,0 +1,62 @@
+version: '3.7'
+
+services:
+
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: hakaton-nginx
+    restart: unless-stopped
+    working_dir: /app
+    ports:
+        - 20081:81 # backend
+        - 20082:82 # frontend
+    volumes:
+      - ./:/app
+      - ./docker/nginx:/etc/nginx/conf.d:cached
+    links:
+      - php-fpm
+    depends_on:
+      - php-fpm
+      - db
+    networks:
+      - hakaton
+
+  php-fpm:
+    build: docker/php-fpm
+    restart: unless-stopped
+    container_name: hakaton-php
+    working_dir: /app
+    ports:
+      - 9000:9000
+    volumes:
+      - ./:/app:cached
+    links:
+      - db
+    depends_on:
+      - db
+    networks:
+      - hakaton
+
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
+    ports:
+      - 33061:3306
+    volumes:
+      - ./docker/storage/mysql:/var/lib/mysql:cached
+    environment:
+      MYSQL_DATABASE: hakaton
+      MYSQL_USER: root
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_PASSWORD:
+      MYSQL_ROOT_PASSWORD:
+    networks:
+      - hakaton
+
+networks:
+  hakaton:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.228.10/28
