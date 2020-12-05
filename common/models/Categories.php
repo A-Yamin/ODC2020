@@ -14,7 +14,7 @@ use Yii;
  *
  * @property Feedbacks[] $feedbacks
  */
-class Categories extends \yii\db\ActiveRecord
+class Categories extends BaseTimestampedModel
 {
     /**
      * {@inheritdoc}

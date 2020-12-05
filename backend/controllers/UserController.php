@@ -32,11 +32,11 @@ class UserController extends Controller
     public function actions()
     {
         return [
-            'photo' => [
+            'userPhoto' => [
                 'class' => UploadAction::className(),
                 'url' => '',
-                'prefixPath' => 'uploads/userPhoto/',
-                'path' => 'uploads/userPhoto/',
+                'prefixPath' => '/uploads/userPhoto/',
+                'path' => '/uploads/userPhoto/',
             ],
         ];
     }
@@ -80,7 +80,8 @@ class UserController extends Controller
     {
         $model = new User();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

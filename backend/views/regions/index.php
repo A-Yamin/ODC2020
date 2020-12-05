@@ -26,9 +26,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
             'name',
-            'parent_id',
+            [
+                'attribute' => 'parent_id',
+                'value' => function($searchModel){
+                    return $searchModel->parent_id ? $searchModel->name : '';
+                }
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

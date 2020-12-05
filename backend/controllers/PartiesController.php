@@ -66,7 +66,10 @@ class PartiesController extends Controller
     {
         $model = new Parties();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->created_at = time();
+            $model->updated_at = time();
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -86,7 +89,9 @@ class PartiesController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->updated_at = time();
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

@@ -12,13 +12,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="feedbacks-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Feedbacks', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -26,9 +19,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
             'fio',
-            'category_id',
+            [
+                'attribute' => 'category_id',
+                'value' => 'category.name'
+            ],
             'phone',
             'content:ntext',
             //'created_at',

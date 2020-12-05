@@ -13,6 +13,17 @@ use yii\web\IdentityInterface;
  *
  * @property integer $id
  * @property string $password_hash
+ * @property string $seriesParport
+ * @property string $birth_date
+ * @property string $jshsh
+ * @property string $sex
+ * @property string $last_name
+ * @property string $firstname
+ * @property string $secount_name
+ * @property string $photo
+ * @property string $phone
+ * @property integer $region_id
+ * @property integer $part_id
  * @property string $password_reset_token
  * @property string $verification_token
  * @property string $email
@@ -22,7 +33,7 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  * @property string $password write-only password
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends BaseTimestampedModel implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
@@ -214,5 +225,30 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    public function signup()
+    {
+        if (!$this->validate()) {
+            return null;
+        }
+        $user = new User();
+        $user->email = $this->email;
+        $user->firstname = $this->firstname;
+        $user->secount_name = $this->secount_name;
+        $user->last_name = $this->last_name;
+        $user->sex = $this->sex;
+        $user->jshsh = $this->jshsh;
+        $user->birth_date = $this->birth_date;
+        $user->seriesParport = $this->seriesParport;
+        $user->phone = $this->phone;
+        $user->photo = $this->photo;
+        $user->part_id = $this->part_id;
+        $user->region_id = $this->region_id;
+        $user->setPassword($this->password);
+        $user->generateAuthKey();
+        $user->generateEmailVerificationToken();
+        return $user->save();
+
     }
 }

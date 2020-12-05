@@ -2,6 +2,7 @@
 
 use borales\extensions\phoneInput\PhoneInput;
 use common\models\Parties;
+use common\models\User;
 use kartik\date\DatePicker;
 use sultonov\cropper\CropperWidget;
 use yii\helpers\ArrayHelper;
@@ -15,7 +16,7 @@ use yii\widgets\ActiveForm;
 
 <div class="user-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'firstname')->textInput(['maxlength' => true]) ?>
 
@@ -52,26 +53,15 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'region_id')->dropDownList(ArrayHelper::map(\common\models\Regions::find()->all(),'id','name')) ?>
 
     <?=$form->field($model, 'photo')->widget(CropperWidget::className(), [
-        'uploadUrl' => \yii\helpers\Url::toRoute('user/photo'),
-        'prefixUrl' => 'uploads/userPhoto/',
+        'uploadUrl' => \yii\helpers\Url::toRoute('user/userPhoto/'),
+        'prefixUrl' => '/uploads/userPhoto/',
         'avatar' => true,
         'width' => 480,
         'height' => 480
     ]) ?>
 
-    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'status')->dropDownList([User::STATUS_ACTIVE => 'active',User::STATUS_INACTIVE => 'inactive' , User::STATUS_DELETED => 'deleted']) ?>
 
-    <?= $form->field($model, 'password_hash')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'password_reset_token')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
-    <?= $form->field($model, 'verification_token')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

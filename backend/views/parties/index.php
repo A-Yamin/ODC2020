@@ -12,8 +12,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="parties-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
         <?= Html::a('Create Parties', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
@@ -26,10 +24,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+           // 'id',
             'name',
-            'created_at',
-            'updated_at',
+            'created_at:datetime',
+           // 'updated_at:datetime',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

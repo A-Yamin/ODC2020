@@ -3,7 +3,7 @@
 namespace common\models;
 
 use Yii;
-
+use common\models\BaseTimestampedModel;
 /**
  * This is the model class for table "party".
  *
@@ -14,7 +14,7 @@ use Yii;
  *
  * @property User[] $users
  */
-class Parties extends \yii\db\ActiveRecord
+class Parties extends BaseTimestampedModel
 {
     /**
      * {@inheritdoc}
