@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Feedbacks;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -23,8 +24,18 @@ class FeedbacksController extends Controller
 
     public function actionAdd($deputat_id = null){
 
+        $model = new Feedbacks();
+        if (Yii::$app->request->post() && $model->save()){
+            Yii::$app->session->setFlash('success','Sizning murojaatingiz qo`shildi');
+            return $this->render('feedback',[
+                'deputat_id' => $deputat_id,
+                'model' => $model
+
+            ]);
+        }
          return $this->render('feedback',[
-             'deputat_id' => $deputat_id
+             'deputat_id' => $deputat_id,
+             'model' => $model
          ]);
     }
 
