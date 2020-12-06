@@ -35,8 +35,5 @@ class AppAsset extends AssetBundle
         'style/js/scripts.js',
         'https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js',
     ];
-    public $depends = [
-        'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
-    ];
+
 }

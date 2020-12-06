@@ -36,7 +36,7 @@
                             }
                         }
                         ?></p>
-                    <a href="<?=\yii\helpers\Url::to(['feedbacks/add'])?>" class="btn btn-success">Murojaat qilish</a>
+                    <a href="<?=\yii\helpers\Url::to(['feedbacks/add','deputat_id' => $item->id])?>" class="btn btn-success">Murojaat qilish</a>
                 </div>
 
             </div>

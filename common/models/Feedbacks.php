@@ -53,8 +53,8 @@ class Feedbacks extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'fio' => Yii::t('app', 'Fio'),
-            'category_id' => Yii::t('app', 'Category ID'),
-            'user_id' => Yii::t('app', 'User ID'),
+            'category_id' => Yii::t('app', 'Theme'),
+            'user_id' => Yii::t('app', 'Deputat'),
             'phone' => Yii::t('app', 'Phone'),
             'status' => Yii::t('app', 'Status'),
             'content' => Yii::t('app', 'Content'),

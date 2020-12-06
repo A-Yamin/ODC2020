@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\widgets\MaskedInput;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
@@ -14,18 +15,17 @@ use yii\widgets\ActiveForm;
         <div class="row">
             <div class="col-sm-8">
                 <div class="form-container">
-                    <?php
-                    $form = ActiveForm::begin(); ?>
+                    <?php $form = ActiveForm::begin(); ?>
                     <?php if (Yii::$app->session->hasFlash('success')): ?>
                     <?php endif ?>
                     <?= $form->field($model, 'fio')->textInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'phone')->textInput() ?>
 
                     <?= $form->field($model, 'category_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Categories::find()->all(), 'id', 'name')) ?>
 
                     <?php if (!isset($deputat_id)) { ?>
-                        <?= $form->field($model, 'user_id')->dropDownList(['male' => "Male", 'female' => "Female"]) ?>
+                        <?= $form->field($model, 'user_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\User::find()->where(['isDeputat' => true])->all(),'id','firstname')) ?>
                     <?php } else { ?>
                         <input type="hidden" name="user_id" value="<?= $deputat_id ?>">
                     <?php } ?>

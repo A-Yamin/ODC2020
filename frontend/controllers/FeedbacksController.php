@@ -25,7 +25,10 @@ class FeedbacksController extends Controller
     public function actionAdd($deputat_id = null){
 
         $model = new Feedbacks();
-        if (Yii::$app->request->post() && $model->save()){
+        if ($model->load(Yii::$app->request->post())){
+            $model->created_at = time();
+            $model->updated_at = time();
+            $model->save();
             Yii::$app->session->setFlash('success','Sizning murojaatingiz qo`shildi');
             return $this->render('feedback',[
                 'deputat_id' => $deputat_id,
