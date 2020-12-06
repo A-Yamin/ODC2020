@@ -165,8 +165,9 @@ class User extends ActiveRecord implements IdentityInterface
     {
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
-
-
+        public function mergeNames(){
+        return $this->firstname . ' ' . $this->secount_name .  ' ' .$this->last_name;
+    }
     public static function findByEmail($email)
     {
         return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);

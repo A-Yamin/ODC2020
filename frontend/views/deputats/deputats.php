@@ -1,3 +1,14 @@
+<div class="container">
+    <div class="row">
+        <div class="sidebox widget">
+            <h4 class="widget-title">Qidiruv</h4>
+            <form class="searchform" method="get">
+                <input type="text" id="s1" name="s" value="Qidiruv so`zi" onfocus="this.value=''" onblur="this.value='Search something'">
+                <button type="submit" class="btn btn-default">Qidirish</button>
+            </form>
+        </div>
+    </div>
+</div>
 <?php foreach ($model as $item): ?>
     <div class="light-wrapper">
         <div class="container inner">

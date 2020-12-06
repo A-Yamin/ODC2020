@@ -2,13 +2,16 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\widgets\MaskedInput;
+use yii\helpers\ArrayHelper;
+use common\models\Categories;
+use common\models\User;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
 /* @var $form yii\widgets\ActiveForm */
 
 ?>
+
 <div class="light-wrapper">
     <div class="container inner">
         <h1 class="text-center">Murojaat qoldirish</h1>
@@ -22,10 +25,12 @@ use yii\widgets\MaskedInput;
 
                     <?= $form->field($model, 'phone')->textInput() ?>
 
-                    <?= $form->field($model, 'category_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Categories::find()->all(), 'id', 'name')) ?>
+                    <?= $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Categories::find()->all(), 'id', 'name')) ?>
 
                     <?php if (!isset($deputat_id)) { ?>
-                        <?= $form->field($model, 'user_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\User::find()->where(['isDeputat' => true])->all(),'id','firstname')) ?>
+                        <?= $form->field($model, 'user_id')->dropDownList(ArrayHelper::map(User::find()->where(['isDeputat' => true])->all(), 'id', function (User $user) {
+                            return $user->mergeNames();
+                        })) ?>
                     <?php } else { ?>
                         <input type="hidden" name="user_id" value="<?= $deputat_id ?>">
                     <?php } ?>

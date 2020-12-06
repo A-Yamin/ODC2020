@@ -1,6 +1,8 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Categories;
+use common\models\Feedbacks;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -74,7 +76,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+
+        return $this->render('index',[
+            'model' => Feedbacks::find()->all(),
+            'categories' => Categories::find()->all(),
+        ]);
     }
 
     /**
