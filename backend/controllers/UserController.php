@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\helpers\UserHelper;
 use sultonov\cropper\actions\UploadAction;
 use Yii;
 use common\models\User;
@@ -64,7 +65,6 @@ class UserController extends Controller
             return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
 
         }
-        var_dump($model->getErrors());
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -82,6 +82,15 @@ class UserController extends Controller
             'model' => $model,
         ]);
     }
+
+    public function actionDistricts($id){
+       return UserHelper::getDisreict($id);
+    }
+
+    public function actionMahalla($region_id,$district_id){
+        return UserHelper::getMahalla($region_id,$district_id);
+    }
+
 
     public function actionDelete($id)
     {

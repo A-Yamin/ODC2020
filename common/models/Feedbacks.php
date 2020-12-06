@@ -19,9 +19,11 @@ use Yii;
  */
 class Feedbacks extends BaseTimestampedModel
 {
-    /**
-     * {@inheritdoc}
-     */
+    const STATUS_CHECKED = 3;
+    const STATUS_WAITING = 2;
+    const STATUS_IGNORED = 1;
+
+
     public static function tableName()
     {
         return 'feedbacks';
@@ -34,7 +36,7 @@ class Feedbacks extends BaseTimestampedModel
     {
         return [
             [['category_id', 'phone', 'created_at', 'updated_at'], 'required'],
-            [['category_id', 'created_at', 'updated_at'], 'integer'],
+            [['category_id', 'user_id' ,'created_at', 'updated_at'], 'integer'],
             [['content'], 'string'],
             [['fio', 'phone'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['category_id' => 'id']],
@@ -49,7 +51,8 @@ class Feedbacks extends BaseTimestampedModel
         return [
             'id' => Yii::t('app', 'ID'),
             'fio' => Yii::t('app', 'Fio'),
-            'category_id' => Yii::t('app', 'Category ID'),
+            'category_id' => Yii::t('app', 'Category'),
+            'user_id' => Yii::t('app', 'Deputat name'),
             'phone' => Yii::t('app', 'Phone'),
             'content' => Yii::t('app', 'Content'),
             'created_at' => Yii::t('app', 'Created At'),
@@ -65,5 +68,10 @@ class Feedbacks extends BaseTimestampedModel
     public function getCategory()
     {
         return $this->hasOne(Categories::className(), ['id' => 'category_id']);
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }

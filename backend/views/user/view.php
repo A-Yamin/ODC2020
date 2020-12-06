@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'phone',
                 'value' => function ($model) {
-                    return Html::a($model->phone,'tel:'.$model->phone);
+                    return Html::a($model->phone, 'tel:' . $model->phone);
                 },
                 'label' => 'Phone',
                 'format' => 'raw'
@@ -51,11 +51,40 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Parties'
             ],
             [
-                'attribute' => 'region_id',
+                'attribute' => 'reg_id',
                 'value' => function ($model) {
-                    return $model->region->name;
+                    $elem = json_decode(json_decode(file_get_contents('https://pm.gov.uz/oz/api/enums/get-regions')));
+                    foreach ($elem as $item) {
+                        if ($model->reg_id === $item->id) {
+                            return $item->title;
+                        }
+                    }
                 },
                 'label' => 'Region'
+            ],
+            [
+                'attribute' => 'district_id',
+                'value' => function ($model) {
+                    $elem = json_decode(json_decode(file_get_contents('https://pm.gov.uz/oz/api/enums/get-districts?region_id=' . $model->reg_id)));
+                    foreach ($elem as $item) {
+                        if ($model->district_id === $item->id) {
+                            return $item->title;
+                        }
+                    }
+                },
+                'label' => 'District'
+            ],
+            [
+                'attribute' => 'mahalla_id',
+                'value' => function ($model) {
+                    $elem = json_decode(json_decode(file_get_contents('https://pm.gov.uz/oz/api/enums/get-mahalla?region_id=' . $model->reg_id . '&district_id=' . $model->district_id)));
+                    foreach ($elem as $item) {
+                        if ($model->mahalla_id === $item->id) {
+                            return $item->title;
+                        }
+                    }
+                },
+                'label' => 'Mahalla'
             ],
             'status',
             'created_at:datetime',

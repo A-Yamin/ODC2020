@@ -16,6 +16,10 @@ class m201205_130130_add_foreign_to_feedbacks extends Migration
 
         $this->addForeignKey('feedback_category_id_fk', '{{%feedbacks}}', 'category_id', '{{%categories}}', 'id', 'cascade', 'cascade');
 
+        $this->createIndex('feedback_user_id_ix', '{{%feedbacks}}', 'user_id');
+
+        $this->addForeignKey('feedback_user_id_fk', '{{%feedbacks}}', 'user_id', '{{%user}}', 'id', 'cascade', 'cascade');
+
     }
 
     /**

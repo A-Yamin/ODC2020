@@ -12,8 +12,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
         <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
@@ -31,10 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'secount_name',
             'last_name',
             'sex',
-            //'jshsh',
-            //'birth_date',
-            //'seriesParport',
-            //'email:email',
             [
                 'attribute' => 'phone',
                 'value' => function ($model) {
@@ -43,20 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Phone',
                 'format' => 'raw'
             ],
-            //'part_id',
-            //'region_id',
-            //'photo',
-            //'auth_key',
-            //'password_hash',
-            //'password_reset_token',
-//            'status',
-            //'created_at',
-            //'updated_at',
-            //'verification_token',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-
-
 </div>

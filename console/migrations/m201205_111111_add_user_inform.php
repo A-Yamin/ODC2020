@@ -16,10 +16,6 @@ class m201205_111111_add_user_inform extends Migration
 
         $this->addForeignKey('user_party_id_fk', '{{%user}}', 'part_id', '{{%party}}', 'id', 'cascade','cascade');
 
-        $this->createIndex('user_region_id_ix', '{{%user}}', 'region_id');
-
-        $this->addForeignKey('user_region_id_fk', '{{%user}}', 'region_id', '{{%regions}}', 'id', 'cascade','cascade');
-
         $this->insert('{{%user}}', [
             'firstname' => "Admin",
             'secount_name' => "Adminov",
@@ -31,8 +27,11 @@ class m201205_111111_add_user_inform extends Migration
             'email' => "admin@gmail.com",
             'phone' => "998933334455",
             'part_id' => 1,
-            'region_id' => 1,
+            'mahalla_id' => 1,
+            'reg_id' => 1,
+            'district_id' => 1,
             'photo' => "admin.jpg",
+            'inform' =>'lorem ipsum dolor sit emet,lorem ipsum dolor sit emet,lorem ipsum dolor sit emet,lorem ipsum dolor sit emet',
             'status' => 10,
             'password_hash' => Yii::$app->security->generatePasswordHash('password'),
             'password_reset_token' => NULL,

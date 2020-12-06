@@ -11,13 +11,21 @@ use common\models\User;
  */
 class UserSearch extends User
 {
+    public $isFront;
+    public function __construct($config = [],$isFront = false)
+    {
+        parent::__construct();
+        $this->isFront = $isFront;
+
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'part_id', 'region_id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'part_id', 'mahalla_id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['firstname', 'secount_name', 'last_name', 'sex', 'jshsh', 'birth_date', 'seriesParport', 'email', 'phone', 'photo', 'auth_key', 'password_hash', 'password_reset_token', 'verification_token'], 'safe'],
         ];
     }
@@ -41,7 +49,9 @@ class UserSearch extends User
     public function search($params)
     {
         $query = User::find();
-
+        if ($this->isFront){
+            $query->where(['isDeputat' => true]);
+        }
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -60,7 +70,7 @@ class UserSearch extends User
         $query->andFilterWhere([
             'id' => $this->id,
             'part_id' => $this->part_id,
-            'region_id' => $this->region_id,
+            'mahalla_id' => $this->mahalla_id,
             'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

@@ -17,7 +17,9 @@ use yii\widgets\MaskedInput;
 ?>
 
 <div class="user-form">
-
+    <?php $regionsList = file_get_contents('https://pm.gov.uz/oz/api/enums/get-regions');
+    $regions = json_decode(json_decode($regionsList));
+    ?>
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
     <?php if (Yii::$app->session->hasFlash('success')): ?>
     <?php endif ?>
@@ -50,11 +52,19 @@ use yii\widgets\MaskedInput;
 
     <?= $form->field($model, 'part_id')->dropDownList(ArrayHelper::map(Parties::find()->all(), 'id', 'name')) ?>
 
-    <?= $form->field($model, 'region_id')->dropDownList(ArrayHelper::map(Regions::find()->all(), 'id', 'name')) ?>
+    <?= $form->field($model, 'reg_id')->dropDownList(ArrayHelper::map($regions, 'id', 'title')) ?>
+
+    <?= $form->field($model, 'district_id')->dropDownList(['prompt' => "Select district"]) ?>
+
+    <?= $form->field($model, 'mahalla_id')->dropDownList(['prompt' => "Select Mahalla"]) ?>
+
+    <?= $form->field($model, 'inform')->textarea(['placeholder' => 'User inform']) ?>
 
     <?= $form->field($model, 'file')->fileInput(['multiple' => false, 'accept' => 'image/*']) ?>
 
     <?= $form->field($model, 'status')->dropDownList([User::STATUS_ACTIVE => 'active', User::STATUS_INACTIVE => 'inactive', User::STATUS_DELETED => 'deleted']) ?>
+
+    <?= $form->field($model, 'isDeputat')->dropDownList([ true => 'Yes',false => 'No' ] ) ?>
 
 
     <div class="form-group">

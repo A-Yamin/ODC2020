@@ -48,3 +48,36 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed201
 </body>
 </html>
 <?php $this->endPage() ?>
+<script>
+    $( document ).ready(function() {
+        $('#user-reg_id').on('change', function(){
+            var data = $(this).val();
+            $.ajax({
+                url: '/user/districts?id=' + data,
+                type: 'GET',
+                success: function(res){
+                    $('#user-district_id').html(res)
+                },
+                error: function(){
+                   console.log('error')
+                }
+            });
+            return false;
+        });
+        $('#user-district_id').on('change', function(){
+            var data = $(this).val();
+            var data1 = $('#user-reg_id').val();
+            $.ajax({
+                url: '/user/mahalla?region_id=' + data1 +"&" +'district_id=' + data,
+                type: 'GET',
+                success: function(res){
+                    $('#user-mahalla_id').html(res)
+                },
+                error: function(){
+                    console.log('error')
+                }
+            });
+            return false;
+        });
+    });
+</script>

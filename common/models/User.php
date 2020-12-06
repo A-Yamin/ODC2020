@@ -24,7 +24,7 @@ use yiidreamteam\upload\ImageUploadBehavior;
  * @property string $secount_name
  * @property string $photo
  * @property string $phone
- * @property integer $region_id
+ * @property integer $mahalla_id
  * @property integer $part_id
  * @property string $password_reset_token
  * @property string $verification_token
@@ -60,19 +60,22 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['firstname', 'secount_name', 'last_name', 'sex', 'jshsh', 'birth_date', 'seriesParport', 'email', 'phone', 'part_id', 'region_id'], 'required'],
-            [['part_id', 'region_id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['firstname', 'secount_name', 'last_name', 'sex', 'jshsh', 'birth_date', 'seriesParport', 'email', 'phone', 'part_id', 'mahalla_id'], 'required'],
+            [['part_id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['firstname', 'secount_name', 'last_name', 'sex', 'birth_date', 'seriesParport', 'email', 'phone', 'password_hash', 'password_reset_token', 'verification_token'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['jshsh'], 'integer'],
+            [['reg_id'], 'integer'],
+            [['district_id'], 'integer'],
             [['password'], 'string'],
+            [['inform'], 'string'],
+            [['isDeputat'], 'boolean'],
             [['file'], 'image'],
             [['file'], 'required'],
             [['email'], 'unique'],
             [['email'], 'email'],
             [['password_reset_token'], 'unique'],
             [['part_id'], 'exist', 'skipOnError' => true, 'targetClass' => Parties::className(), 'targetAttribute' => ['part_id' => 'id']],
-            [['region_id'], 'exist', 'skipOnError' => true, 'targetClass' => Regions::className(), 'targetAttribute' => ['region_id' => 'id']],
         ];
     }
 
@@ -92,8 +95,11 @@ class User extends ActiveRecord implements IdentityInterface
             'seriesParport' => Yii::t('app', 'Pasport Series'),
             'email' => Yii::t('app', 'Email'),
             'phone' => Yii::t('app', 'Phone'),
-            'part_id' => Yii::t('app', 'Part ID'),
-            'region_id' => Yii::t('app', 'Region ID'),
+            'part_id' => Yii::t('app', 'Parties'),
+            'inform' => Yii::t('app', 'Inform'),
+            'mahalla_id' => Yii::t('app', 'Mahalla'),
+            'reg_id' => Yii::t('app', 'Region'),
+            'district_id' => Yii::t('app', 'Districts'),
             'photo' => Yii::t('app', 'Photo'),
             'auth_key' => Yii::t('app', 'Auth Key'),
             'password_hash' => Yii::t('app', 'Password Hash'),
@@ -286,13 +292,4 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasOne(Parties::className(), ['id' => 'part_id']);
     }
 
-    /**
-     * Gets query for [[Region]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRegion()
-    {
-        return $this->hasOne(Regions::className(), ['id' => 'region_id']);
-    }
 }
